@@ -1,73 +1,27 @@
 <!DOCTYPE html>
 <html lang="uz">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kameradan Rasmlarni Yuklash</title>
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
-<style>
-#kameraVideo {
-  width: 100%;
-  height: auto;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kameradan Rasmlarni Yuklash</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./main.css">
 </head>
+
 <body>
 
-<div class="container">
-  <h1 class="mt-5">Kameradan Rasm Yuklash</h1>
-  <div class="row justify-content-center mt-4">
-    <div class="col-md-6">
-      <video id="kameraVideo" autoplay></video>
-      <button id="captureButton" class="btn btn-primary mt-3">Rasmni Yuklash</button>
+    <div class="container">
+        <h1 class="mt-5">Kameradan Rasm Yuklash</h1>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-6">
+                <video id="kameraVideo" autoplay></video>
+                <button id="captureButton" class="btn btn-primary mt-3">Rasmni Yuklash</button>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-
-<script>
-const video = document.getElementById('kameraVideo');
-const captureButton = document.getElementById('captureButton');
-
-// Kamerani ochish
-navigator.mediaDevices.getUserMedia({ video: true })
-  .then((stream) => {
-    video.srcObject = stream;
-  })
-  .catch((error) => {
-    console.error('Kameraga kirishda xatolik yuz berdi: ', error);
-  });
-
-// Rasmni olish va yuklash
-captureButton.addEventListener('click', () => {
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d');
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  context.drawImage(video, 0, 0, canvas.width, canvas.height);
-  
-  // Rasmni faylga olish
-  canvas.toBlob((blob) => {
-    const formData = new FormData();
-    formData.append('image', blob, 'rasm.jpg');
-    
-    // Faylni yuborish uchun POST so'rovi
-    fetch('/upload', {
-      method: 'POST',
-      body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Yuklangan fayl URL:', data.fileUrl);
-      alert('Rasm muvaffaqiyatli yuklandi!');
-    })
-    .catch(error => {
-      console.error('Xatolik yuz berdi:', error);
-      alert('Rasm yuklashda xatolik yuz berdi.');
-    });
-  }, 'image/jpeg');
-});
-</script>
-
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="./main.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
