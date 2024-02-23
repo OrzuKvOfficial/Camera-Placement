@@ -1,4 +1,20 @@
 #kameraVideo {
-    width: 100%;
+    width: 500px;
     height: auto;
+}
+.btn {
+    background-color: #007bff; /* Buton fon rangi */
+    color: #fff; /* Buton matn rangi */
+    border-radius: 5px; /* Butonning yuqori qismidagi kengaytma */
+    padding: 10px 20px; /* Butonning ichki paddingi */
+    border: none; /* Butonning chegarasi yo'q */
+    cursor: pointer; /* Kursonni buton ustiga qo'yish */
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Butonning fon rangi hover qilinganda */
+}
+
+.btn:active {
+    background-color: #0056b3; /* Butonning fon rangi bosilganda */
 }
