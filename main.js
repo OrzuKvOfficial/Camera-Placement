@@ -1,4 +1,3 @@
-
 // Kamera yoqish tugmasini tanlash
 var startButton = document.getElementById('startButton');
 // Kamera o'chirish tugmasini tanlash
@@ -27,6 +26,11 @@ stopButton.addEventListener('click', function() {
 
 // Tasvirni tushurish va yuklash tugmasi bosilganda
 captureButton.addEventListener('click', function() {
+    // Kamera ruxsat bermasa, foydalanuvchiga xabar berish
+    if (!stream) {
+        alert("Web kameraga ruxsat berilmagan. Kamerani yoqing va so'ng qayta urinib ko'ring.");
+        return;
+    }
     // Tasvirni olish va yuklash funksiyasini chaqirish
     captureAndUpload();
 });
