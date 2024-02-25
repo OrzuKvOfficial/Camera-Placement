@@ -1,27 +1,114 @@
 <!DOCTYPE html>
-<html lang="uz">
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kameradan Rasmlarni Yuklash</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="./main.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kamera Boshqarish</title>
+<style>
+    /* Video oynasini konfiguratsiya qiling */
+    #video {
+        width: 40%;
+        height: auto;
+        margin-bottom: 10px;
+    }
+</style>
 </head>
-
 <body>
 
-    <div class="container">
-        <h1 class="mt-5">Kameradan Rasm Yuklash</h1>
-        <div class="row justify-content-center mt-4">
-            <div class="col-md-6">
-                <video id="kameraVideo" autoplay></video>
-                <button id="captureButton" class="btn btn-primary mt-3">Rasmni Yuklash</button>
-            </div>
-        </div>
-    </div>
-    <script src="./main.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-</body>
+<!-- Kamera bilan ishlovchi video elementi -->
+<video id="video" autoplay></video>
 
+<!-- Kamera yoqish tugmasi -->
+<button id="startButton">Kamera Yoqish</button>
+
+<!-- Kamera o'chirish tugmasi -->
+<button id="stopButton">Kamera O'chirish</button>
+
+<!-- Tasvirni yuklash tugmasi -->
+<button id="captureButton">Rasim Tushurish va Yuklash</button>
+
+<!-- Tasvirga tushurilgan tasvir uchun rasim o'chirilgan joy -->
+<canvas id="canvas" style="display:none;"></canvas>
+
+<script>
+// Kamera yoqish tugmasini tanlash
+var startButton = document.getElementById('startButton');
+// Kamera o'chirish tugmasini tanlash
+var stopButton = document.getElementById('stopButton');
+// Tasvirni tushurish va yuklash tugmasini tanlash
+var captureButton = document.getElementById('captureButton');
+// Video elementini tanlash
+var video = document.getElementById('video');
+// Tasvir olish uchun rasmni tanlash
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+// Kamera potokini saqlash uchun global o'zgaruvchi
+var stream;
+
+// Kamera yoqish tugmasi bosilganda
+startButton.addEventListener('click', function() {
+    // Kamera yoqish funksiyasini chaqirish
+    startCamera();
+});
+
+// Kamera o'chirish tugmasi bosilganda
+stopButton.addEventListener('click', function() {
+    // Kamera o'chirish funksiyasini chaqirish
+    stopCamera();
+});
+
+// Tasvirni tushurish va yuklash tugmasi bosilganda
+captureButton.addEventListener('click', function() {
+    // Tasvirni olish va yuklash funksiyasini chaqirish
+    captureAndUpload();
+});
+
+// Kamera yoqish funksiyasi
+function startCamera() {
+    // Kamera bilan ishlash uchun API-ni tekshirish
+    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Kamera uchun so'rovnoma
+        navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function(str) {
+            // Kamera potokini saqlash
+            stream = str;
+            // Video elementiga kamera potokini bog'lash
+            video.srcObject = stream;
+        })
+        .catch(function(error) {
+            console.log("Kamera xatosi: ", error);
+        });
+    }
+}
+
+// Kamera o'chirish funksiyasi
+function stopCamera() {
+    // Kamera potokini to'xtatish
+    var tracks = stream.getTracks();
+    tracks.forEach(function(track) {
+        track.stop();
+    });
+    // Video elementini bekor qilish
+    video.srcObject = null;
+}
+
+// Tasvirni olish va yuklash funksiyasi
+function captureAndUpload() {
+    // Tasvirni olish
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    // Tasvirni yuklash
+    var imageDataURL = canvas.toDataURL('image/png');
+    // Rasimni yuklash tugmasi orqali yuklash
+    uploadImage(imageDataURL);
+}
+
+// Rasimni yuklash funksiyasi
+function uploadImage(imageDataURL) {
+    // Yuklash uchun Ajax so'rovi yuborish (masalan, serverga)
+    // Bu joyga sizning serveringizning API sifatida yuborilishi kerak
+    console.log('Rasim yuklanmoqda:', imageDataURL);
+}
+</script>
+
+</body>
 </html>
