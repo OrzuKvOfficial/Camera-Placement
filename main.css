@@ -1,0 +1,6 @@
+  /* Video oynasini konfiguratsiya qiling */
+  #video {
+    width: 40%;
+    height: auto;
+    margin-bottom: 10px;
+}
